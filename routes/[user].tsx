@@ -1,8 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { getUser, isSignedIn } from "auth";
 import Backlog from "@/islands/Backlog.tsx";
-import { provider } from "@/utils/provider.ts";
+import { getUser } from "@/utils/provider.ts";
 import { BacklogItem } from "@/utils/types.ts";
 import { listBacklog } from "@/utils/db.ts";
 
@@ -19,7 +18,7 @@ interface Props {
 
 export const handler: Handlers<Props> = {
   async GET(req, ctx) {
-    const user = isSignedIn(req) ? await getUser(req, provider) : null;
+    const user = await getUser(req);
     const backlog = await listBacklog(ctx.params.user);
     return ctx.render({
       viewing: ctx.params.user,
@@ -37,7 +36,7 @@ export default function Home({ data }: PageProps<Props>) {
       </Head>
       <div class="flex flex-col h-screen">
         <header class="px-4 py-2 bg-blue-200 flex items-center gap-2">
-          <a href="/" class="font-bold text-xl text-blue-900">
+          <a href={`/${data.viewing}`} class="font-bold text-xl text-blue-900">
             {data.viewing}'s Backlog
           </a>
           <div class="ml-auto" />

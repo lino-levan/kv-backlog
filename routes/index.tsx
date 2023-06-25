@@ -1,8 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { getUser, isSignedIn } from "auth";
 import Backlog from "@/islands/Backlog.tsx";
-import { provider } from "@/utils/provider.ts";
+import { getUser } from "@/utils/provider.ts";
 import { BacklogItem } from "@/utils/types.ts";
 import { listBacklog } from "@/utils/db.ts";
 
@@ -18,7 +17,7 @@ interface Props {
 
 export const handler: Handlers<Props> = {
   async GET(req, ctx) {
-    const user = isSignedIn(req) ? await getUser(req, provider) : null;
+    const user = await getUser(req);
     const backlog = await listBacklog();
     return ctx.render({
       user,

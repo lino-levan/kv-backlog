@@ -67,6 +67,24 @@ export default function Backlog(props: BacklogProps) {
               #{tag}
             </span>
           ))}
+          {props.editable && (
+            <button
+              class="bg-blue-300 hover:bg-red-500 hover:text-white rounded px-1"
+              onClick={() => {
+                fetch("/api/delete", {
+                  method: "POST",
+                  body: val.id,
+                }).then((res) => res.json())
+                  .then((res) => {
+                    if (res.success) {
+                      location.reload();
+                    }
+                  });
+              }}
+            >
+              ⌫
+            </button>
+          )}
         </div>
       ))}
       {props.editable && (
@@ -99,7 +117,7 @@ export default function Backlog(props: BacklogProps) {
             }}
           />
           <button
-            class="font-bold"
+            class="bg-blue-300 hover:bg-blue-400 hover:text-white rounded px-1"
             onClick={() => {
               fetch("/api/set", {
                 method: "POST",
@@ -119,7 +137,7 @@ export default function Backlog(props: BacklogProps) {
                 });
             }}
           >
-            +
+            ⏎
           </button>
         </div>
       )}

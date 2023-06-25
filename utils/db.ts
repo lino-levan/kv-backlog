@@ -7,6 +7,10 @@ export async function setBacklog(user: string, item: BacklogItem) {
   await kv.set([BACKLOG_KV_KEY, user, item.id], item);
 }
 
+export async function deleteBacklog(user: string, id: string) {
+  await kv.delete([BACKLOG_KV_KEY, user, id]);
+}
+
 export async function listBacklog(user?: string) {
   const entries = user
     ? await kv.list({ prefix: [BACKLOG_KV_KEY, user] })

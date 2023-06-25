@@ -4,6 +4,7 @@ import { provider } from "@/utils/provider.ts";
 
 export const handler: Handlers = {
   async GET(req) {
-    return await handleCallback(req, provider);
+    const { response } = await handleCallback(req, provider);
+    return response;
   },
 };
